@@ -93,6 +93,18 @@ extension Dictionary: IStored {
 
 }
 
+extension IStored where Self: RawRepresentable, RawValue: IStored {
+    
+    static func getValue(for key: String, using defaults: UserDefaults) -> Self? {
+        (defaults.value(forKey: key) as? RawValue).flatMap { .init(rawValue: $0) }
+    }
+    
+    static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) {
+        defaults.setValue(value.rawValue, forKey: key)
+    }
+    
+}
+
 // MARK: - Stored
 
 public final class Stored { }
