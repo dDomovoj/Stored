@@ -114,15 +114,23 @@ public struct StorageKey<Value: IStored> {
 
   private let key: String
   private let defaultValue: () -> Value
+  private let onChange: ((Value) -> Void)?
   private let storage: UserDefaults
 
   public var wrappedValue: Value {
     get { Value.getValue(for: key, using: storage) ?? defaultValue() }
-    set { Value.setValue(newValue, for: key, using: storage) }
+    set {
+      Value.setValue(newValue, for: key, using: storage)
+      onChange?(newValue)
+    }
   }
 
-  public init(_ key: String, defaultValue: @autoclosure @escaping () -> Value, storage: UserDefaults? = nil) {
+  public init(_ key: String,
+              defaultValue: @autoclosure @escaping () -> Value,
+              onChange: ((Value) -> Void)? = nil,
+              storage: UserDefaults? = nil) {
     self.key = key
+    self.onChange = onChange
     self.defaultValue = defaultValue
     self.storage = storage ?? .standard
   }
