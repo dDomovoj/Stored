@@ -1,6 +1,5 @@
 //
 //  Stored.swift
-//  SubsTemplate
 //
 //  Created by dDomovoj on 6/9/22.
 //
@@ -33,72 +32,80 @@ extension NSArray: IStored {}
 extension NSDictionary: IStored {}
 
 extension Date: IStored {}
+extension Int: IStored {}
+extension Bool: IStored {}
+extension Float: IStored {}
+extension Double: IStored {}
+extension URL: IStored {}
+extension String: IStored {}
+extension Array: IStored {}
+extension Dictionary: IStored {}
 
-extension Int: IStored {
-
-  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.integer(forKey: key) }
-  public static func setValue(_ value: Int, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
-
-}
-
-extension Bool: IStored {
-
-  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.bool(forKey: key) }
-  public static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
-
-}
-
-extension Float: IStored {
-
-  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.float(forKey: key) }
-  public static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
-
-}
-
-extension Double: IStored {
-
-  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.double(forKey: key) }
-  public static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
-
-}
-
-extension URL: IStored {
-
-  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.url(forKey: key) }
-  public static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
-
-}
-
-extension String: IStored {
-
-  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.string(forKey: key) }
-
-}
-
-extension IStored where Self == Array<String> {
-
-  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.stringArray(forKey: key) }
-
-}
-
-extension Array: IStored {
-
-  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.array(forKey: key) as? Self }
-
-}
-
-extension Dictionary: IStored {
-
-  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.dictionary(forKey: key) as? Self }
-
-}
+//extension Int: IStored {
+//
+//  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.integer(forKey: key) }
+//  public static func setValue(_ value: Int, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
+//
+//}
+//
+//extension Bool: IStored {
+//
+//  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.bool(forKey: key) }
+//  public static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
+//
+//}
+//
+//extension Float: IStored {
+//
+//  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.float(forKey: key) }
+//  public static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
+//
+//}
+//
+//extension Double: IStored {
+//
+//  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.double(forKey: key) }
+//  public static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
+//
+//}
+//
+//extension URL: IStored {
+//
+//  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.url(forKey: key) }
+//  public static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) { defaults.set(value, forKey: key) }
+//
+//}
+//
+//extension String: IStored {
+//
+//  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.string(forKey: key) }
+//
+//}
+//
+//extension IStored where Self == Array<String> {
+//
+//  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.stringArray(forKey: key) }
+//
+//}
+//
+//extension Array: IStored {
+//
+//  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.array(forKey: key) as? Self }
+//
+//}
+//
+//extension Dictionary: IStored {
+//
+//  public static func getValue(for key: String, using defaults: UserDefaults) -> Self? { defaults.dictionary(forKey: key) as? Self }
+//
+//}
 
 extension Optional: IStored where Wrapped: IStored { }
 
 public extension IStored where Self: RawRepresentable, RawValue: IStored {
     
     static func getValue(for key: String, using defaults: UserDefaults) -> Self? {
-        (defaults.value(forKey: key) as? RawValue).flatMap { .init(rawValue: $0) }
+        (defaults.object(forKey: key) as? RawValue).flatMap { .init(rawValue: $0) }
     }
     
     static func setValue(_ value: Self, for key: String, using defaults: UserDefaults) {
